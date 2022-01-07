@@ -36,3 +36,20 @@
  > + .TopCenter : 컨테이너의 위 중앙
  > + .TopStart : 컨테이너의 위 왼쪽
  > + .TopEnd : 컨테이너의 위 오른쪽  
+  
+  
+### tutorial(2) Text  
+  
+> Text 메소드  
+> + text: String : 문구  
+> + modifier: Modifier = Modifier : 모디파이어  
+> + color: Color = Color.Unspecified : 색깔  
+> + fontSize: TextUnit = TextUnit.Unspecified : 크기   
+> + fontWeight: FontWeight? = null : 폰트 굵기  
+> + fontFamily: FontFamily? = null : 글씨 체  
+> + textDecoration: TextDecoration? = null : 글자 꾸미기(밑줄, 선긋기 등)    
+> + textAlign: TextAlign? = null : 글씨 위치  
+> + lineHeight: TextUnit = TextUnit.Unspecified : 줄 간격  
+> + overflow: TextOverflow = TextOverflow.Clip : 잘렸을 경우 표시  
+> + maxLines: Int = Int.MAX_VALUE : 최대 라인 수  
+> + style: TextStyle = LocalTextStyle.current : TextStyle 설정   
