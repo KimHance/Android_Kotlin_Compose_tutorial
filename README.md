@@ -2,7 +2,7 @@
 안드로이드 컴포즈 튜토리얼
 
 
-### tutorial(1)
+### tutorial(1) Row, Column, Box, BoxWithConstraints
 
  > arrangement 요소를 어떤식으로 배열할지  
  > arrangement 는 Row, Column 같은 요소들이 들어가는  
