@@ -36,6 +36,3 @@
  > + .TopCenter : 컨테이너의 위 중앙
  > + .TopStart : 컨테이너의 위 왼쪽
  > + .TopEnd : 컨테이너의 위 오른쪽  
- >  
- > propagateMinConstraints 해당 옵션을 true로 하면  
- > 박스 안에 있는 제일 작은 크기의 뷰를 컨테이너 박스의 크기만큼 constraint 를  
