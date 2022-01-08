@@ -1,23 +1,28 @@
 package com.example.compose_tutorial
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
@@ -34,7 +39,8 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     //BoxWithConstraint()
                 //Container()
-                    ShapeContainer()
+                    //ShapeContainer()
+                    ButtonContainer()
                 }
             }
         }
@@ -175,6 +181,89 @@ fun Container(){
 
 }
 
+// Button
+// enable : 클릭 여부
+// interactionSource : 사용자 인터랙션 처리
+// elevation : 그림자 효과
+// 커스텀
+// shape, border, colors 등 사용 가능
+
+@Composable
+fun ButtonContainer(){
+
+    val buttonBorderGradient = Brush.horizontalGradient(listOf(Color.Yellow,Color.Red))
+
+    val interactionSource = remember { MutableInteractionSource()}
+
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    val pressStatusTitle = if (isPressed) "버튼 누름" else "버튼에서 손 땜"
+
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        Button(
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 10.dp,  //초기
+                pressedElevation = 0.dp,     //눌렀을 떄
+                disabledElevation = 0.dp   //enabled 가 false 일 때
+            ),
+            enabled = true,
+            onClick={
+            Log.d("TAG","버튼 1 클릭")
+        }){
+            Text(text= "버튼 1")
+        }
+        Button(
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 10.dp,  //초기
+                pressedElevation = 0.dp,     //눌렀을 떄
+                disabledElevation = 0.dp   //enabled 가 false 일 때
+            ),
+            enabled = true,
+            shape = CircleShape,
+            border = BorderStroke(4.dp,Color.Black),
+            onClick={
+                Log.d("TAG","버튼 2 클릭")
+            }){
+            Text(text= "버튼 2")
+        }
+        Button(
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 10.dp,  //초기
+                pressedElevation = 0.dp,     //눌렀을 떄
+                disabledElevation = 0.dp   //enabled 가 false 일 때
+            ),
+            enabled = true,
+            shape = CircleShape,
+            border = BorderStroke(4.dp,buttonBorderGradient),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Black,
+                disabledBackgroundColor = Color.LightGray
+            ),
+            interactionSource = interactionSource,
+            contentPadding = PaddingValues(horizontal = 30.dp,vertical = 10.dp),
+            onClick={
+                Log.d("TAG","버튼 3 클릭")
+            }){
+            Text(text= "버튼 3",
+                color = Color.White
+            )
+        }
+//        if(isPressed){
+//            Text(text="버튼 누르고 있음")
+//        }else {
+//            Text(text = " 버튼에서 손 땜")
+//        }
+
+        Text(text = "$pressStatusTitle")
+    }
+}
+
 @Composable
 fun DummyBox(modifier : Modifier = Modifier, color : Color? =null){
     val red = Random.nextInt(256)
@@ -230,6 +319,7 @@ fun DefaultPreview() {
     Compose_tutorialTheme {
         //BoxWithConstraint()
     //Container()
-        ShapeContainer()
+       // ShapeContainer()
+        ButtonContainer()
     }
 }
