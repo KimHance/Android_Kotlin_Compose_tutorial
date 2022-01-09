@@ -57,7 +57,7 @@
 * * *
 
 
-### tutorial(3) Shape , Button
+### tutorial(3) Shape , Button, CheckBox
 > Shape  
 >  + .clip을 이용하면 쉽다.  
 >  + 파이썬의 터틀 그래픽과 비슷하게 모양을 커스텀할 수 있다.  
@@ -68,3 +68,23 @@
 > + elevation : 그림자 효과  
 > + 커스텀 가능  
 > + shape, border, colors 등 사용 가능  
+  
+> CheckBox  
+> + checked : 체크 상태  
+> + onCheckedChange : 체크상태 변경 콜백 이벤트  
+> + enabled : 체크 가능 여부  
+> + colors : 체크 박스에 대한 색 변경  
+> + .checkedColor: 선택 시 배경  
+> + .uncheckedColor: 테두리  
+> + .checkmarkColor: 체크선 색  
+> + .disabledColor: enabled가 false 시  
+  
+> 컴포저블에서 MutableState 객체를 선언하는 세 가지 방법 (체크박스 상태를 바꾸기 위해)  
+> + 'val mutableState = remember { mutableStateOf(default) }'  
+> + 'var value by remember { mutableStateOf(default) }'  
+> + 'val (value, setValue) = remember { mutableStateOf(default) }'  
+  
+> clickable 에서 indication 을 통해 Ripple(클릭한 객체 표시) 제거 및 설정 가능  
+>  + radius : 퍼지는 범위
+>  + bounded : true 면 범위내 클릭된 곳중심으로 퍼짐, false 면 중앙에서 퍼짐
+>  + color : Ripple 색  
