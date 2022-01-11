@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_tutorial3.ui.theme.Compose_tutorial3Theme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
             Compose_tutorial3Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    CheckBoxContainer()
+                    MySnackbar()
                 }
             }
         }
@@ -43,7 +44,7 @@ class MainActivity : ComponentActivity() {
 //        uncheckedColor: 테두리
 //        checkmarkColor: 체크선 색
 //        disabledColor: enabled가 false 시
-
+//
 // 컴포저블에서 MutableState 객체를 선언하는 세 가지 방법
 // 'val mutableState = remember { mutableStateOf(default) }'
 // 'var value by remember { mutableStateOf(default) }'
@@ -162,17 +163,17 @@ fun MyCustomCheckedBox(title : String){
             modifier = Modifier
                 .size(60.dp)
                 .clickable(
-                //indication = null,  // 클릭시 객체 표시, Ripple 제거
-                indication =rememberRipple(  // Ripple 표시
-                    radius = 30.dp,     // 퍼지는 범위
-                    bounded =  false,    // true 면 범위내 클릭된 곳중심으로 퍼짐, false 면 중앙에서 퍼짐
-                    color = Color.Blue   // 색
-                ),
-                interactionSource = remember { MutableInteractionSource() }
-            ) {
-                setIsChecked.invoke(!isChecked)
-                Log.d("TAG","클릭이 됨")
-            }
+                    //indication = null,  // 클릭시 객체 표시, Ripple 제거
+                    indication = rememberRipple(  // Ripple 표시
+                        radius = 30.dp,     // 퍼지는 범위
+                        bounded = false,    // true 면 범위내 클릭된 곳중심으로 퍼짐, false 면 중앙에서 퍼짐
+                        color = Color.Blue   // 색
+                    ),
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    setIsChecked.invoke(!isChecked)
+                    Log.d("TAG", "클릭이 됨")
+                }
         ){
             androidx.compose.foundation.Image(
                 painter = painterResource(id = togglePainter),
@@ -183,10 +184,71 @@ fun MyCustomCheckedBox(title : String){
     }
 }
 
+@Composable
+fun MySnackbar(){
+
+    var snackbarHostState = remember{SnackbarHostState()}
+
+    var coroutineScope = rememberCoroutineScope()
+
+    val buttonTitle : (SnackbarData?) -> String = {snackbarData -> // 스낵바 데이터 상태(띄워졌는지 아닌지)에 따라 String값 설정
+        if (snackbarData != null){
+            "스낵바 숨기기"
+        }else{
+            "스낵바 띄우기"
+        }
+    }
+
+    val buttonColor : (SnackbarData?) -> Color = {snackbarData -> // 스낵바 데이터 상태(띄워졌는지 아닌지)에 따라 Color 설정
+        if (snackbarData != null){
+            Color.Black
+        }else{
+            Color.Blue
+        }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        Button(
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = buttonColor(snackbarHostState.currentSnackbarData),  // 현재 스낵바 데이터 상태에 따라 색깔 바뀜
+                contentColor = Color.White
+            ),
+            onClick = {
+            Log.d("TAG","스낵바 버튼 클릭")
+            if(snackbarHostState.currentSnackbarData != null){ // 스낵바가 이미 존재하면
+                Log.d("TAG","스낵바 이미 존재")
+                snackbarHostState.currentSnackbarData?.dismiss() // 스낵바 내려줌
+                return@Button
+            }
+            coroutineScope.launch {
+                var result = snackbarHostState.showSnackbar( //snackbarHostState 가 Toast 메세지 띄우듯이 처리해줌
+                    "오늘도 공부조지자",
+                    "확인",
+                    SnackbarDuration.Short
+                ).let{
+                    when(it){
+                        SnackbarResult.Dismissed ->  Log.d("TAG","스낵바 닫혀짐")
+                        SnackbarResult.ActionPerformed ->  Log.d("TAG","스냅가 확인 버튼 클릭")
+                    }
+                }
+            }
+        }) {
+            Text(buttonTitle(snackbarHostState.currentSnackbarData)) //스낵바 데이터를 매개변수로 넘겨줌
+        }
+
+        // 스낵바가 보여지는 부분
+        SnackbarHost(hostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
+    }
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     Compose_tutorial3Theme {
-        CheckBoxContainer()
+        MySnackbar()
     }
 }
