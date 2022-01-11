@@ -10,13 +10,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_tutorial3.ui.theme.Compose_tutorial3Theme
@@ -29,7 +38,7 @@ class MainActivity : ComponentActivity() {
             Compose_tutorial3Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    MySnackbar()
+                    TextFieldTest()
                 }
             }
         }
@@ -244,11 +253,96 @@ fun MySnackbar(){
     }
 }
 
+@Composable
+fun TextFieldTest(){
+
+    var userInput by remember { mutableStateOf(TextFieldValue())} //userInput을 활용하는 TextFieldValue
+
+    var phoneNumberInput by remember { mutableStateOf(TextFieldValue())}
+
+    var emailInput by remember { mutableStateOf(TextFieldValue())}
+
+    var passwordInput by remember { mutableStateOf(TextFieldValue())}
+
+    var shouldShowPassword = remember { mutableStateOf(false)}
+
+    val passwordResource: (Boolean) -> Int = {
+        if(it){
+            R.drawable.ic_baseline_visibility
+        }else{
+            R.drawable.ic_baseline_visibility_off
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ){
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = userInput,
+            singleLine = false,
+            maxLines = 2,
+            onValueChange = { newValue -> userInput = newValue},
+            label = {Text("사용자 입력")},
+            placeholder = {Text("작성하세요")}
+
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = phoneNumberInput,
+            singleLine = true, //한줄만
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), //키보드를 넘버로
+            onValueChange = { newValue -> phoneNumberInput = newValue},
+            label = {Text("전화 번호")}, //textField 라벨
+            placeholder = {Text("010-1234-1234")}  //hint 와 비슷
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = emailInput,
+            singleLine = true, //한줄만
+            leadingIcon = {Icon(imageVector = Icons.Default.Email, contentDescription = null)}, //왼쪽에 Icon
+            //trailingIcon = {Icon(imageVector = Icons.Default.CheckCircle, contentDescription = null)}, //오른쪽에 Icon
+            trailingIcon = { IconButton(onClick = { Log.d("TAG","체크버튼 클릭")}) // 클릭이 가능한 Icon
+            {
+                Icon(imageVector = Icons.Default.CheckCircle, contentDescription = null)  // 컴포저블
+            } },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), // 이메일 형식
+            onValueChange = { newValue -> emailInput = newValue},
+            label = {Text("e-mail")}, //textField 라벨
+            placeholder = {Text("이메일 주소를 입력해 주세요")}  //hint 와 비슷
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = passwordInput,
+            singleLine = true, //한줄만
+            leadingIcon = {Icon(imageVector = Icons.Default.Person, contentDescription = null)}, //왼쪽에 Icon
+            trailingIcon = { IconButton(onClick = {
+                Log.d("TAG","체크버튼 클릭")
+                shouldShowPassword.value = !shouldShowPassword.value // 누를 때마다 값 반전
+            }) // 클릭이 가능한 Icon
+            {
+                Icon(painter = painterResource(id = passwordResource(shouldShowPassword.value)),contentDescription = null)  // 컴포저블
+            } },
+            visualTransformation = if(shouldShowPassword.value) VisualTransformation.None else PasswordVisualTransformation(), //showShouldPassword 에 따라 보여주기 여부 결정
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), // 패스워드 형식
+            onValueChange = { newValue -> passwordInput = newValue},
+            label = {Text("비밀번호")}, //textField 라벨
+            placeholder = {Text("비밀번호를 입력해주세요")}  //hint 와 비슷
+        )
+
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     Compose_tutorial3Theme {
-        MySnackbar()
+        TextFieldTest()
     }
 }
