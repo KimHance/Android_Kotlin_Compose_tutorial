@@ -2,7 +2,7 @@
 안드로이드 컴포즈 튜토리얼
 
 
-### tutorial(1) Row, Column, Box, BoxWithConstraints
+### tutorial(1) Row, Column, Box, BoxWithConstraints  
 
  > arrangement 요소를 어떤식으로 배열할지  
  > arrangement 는 Row, Column 같은 요소들이 들어가는  
@@ -57,7 +57,8 @@
 * * *
 
 
-### tutorial(3) Shape , Button, CheckBox
+### tutorial(3) Shape , Button, CheckBox  
+
 > Shape  
 >  + .clip을 이용하면 쉽다.  
 >  + 파이썬의 터틀 그래픽과 비슷하게 모양을 커스텀할 수 있다.  
@@ -88,3 +89,26 @@
 >  + radius : 퍼지는 범위
 >  + bounded : true 면 범위내 클릭된 곳중심으로 퍼짐, false 면 중앙에서 퍼짐
 >  + color : Ripple 색  
+
+* * *
+
+### tutorial(4) SnackBar, TextField  
+
+> SnackBar  
+> + SnackbarHostState의 currentSnackbarData에 의해 동작 가능  
+> + rememberCoroutineScope() 의 .launch 메소드를 통해 스낵바를 보여줌  
+> + SnackbarResult.Dismissed -> 스낵바가 내려간 상태  
+> + SnackbarResult.ActionPerformed -> 스낵바 올라온 상태  
+> + 올라온 스낵바를 dismiss()를 통해 내릴 수 있음  
+  
+> TextField  
+> + value 필드를 통해 input 가능  
+> + singleLine 필드를 통해 한줄만 보이기 가능  
+> + maxLines 필드를 통해 줄 최대치 설정 가능  
+> + label 필드를 통해 필드의 라벨 설정 가능  
+> + placeholder 필드는 hint 와 비슷  
+> + keyboardOptions 을 통해 필드 클릭시 키보드 종류 설정 가능
+> + TextField 는 테두리가 없음, OutlinedTextField 는 테두리가 존재  
+> + leadingIcon 을 통해 왼쪽에 이미지, trailingIcon 은 오른쪽 이미지, 둘다 Icon 혹은 IconButton으로 클릭설정 가능  
+> + visualTransformation 을 통해 문자 숨기기 가능  
+> + onValueChange 을 통해 필드안의 input을 유닛으로 처리  
